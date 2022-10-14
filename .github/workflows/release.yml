@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: build
-        run: mkdir .release-artifacts && cp $(bazel build --show_result=9999 target-determinator:all driver:all 2>&1 | grep 'bazel-out') .release-artifacts/
+        run: mkdir .release-artifacts && cp $(bazel cquery --output=files '(target-determinator:all  + driver:all)' 2>&1 | grep '.*/[^/]*\.[*/]*' | grep -v '\.a$') .release-artifacts/
       - name: release
         uses: softprops/action-gh-release@v1
         with:
